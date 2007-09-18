@@ -1,0 +1,7 @@
+This is a mirror of http://www.vim.org/scripts/script.php?script_id=2024
+
+Brew is a templating system for R similar to PHP, Java/Active server pages, Ruby's erb, or Python's psp.
+
+Based heavily on eruby.vim of the ruby-vim package by Tim Pope and others.
+
+http://github.com/graywh/vim-brew
