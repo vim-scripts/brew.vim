@@ -1,6 +1,6 @@
 " Vim syntax file
-" Language:   brew
-" Maintainer: Will Gray <graywh@gmail.com>
+" Language:	brew
+" Maintainer:	Will Gray <graywh@gmail.com>
 "
 " This is heavily based on Tim Pope's eruby.vim.
 
@@ -19,6 +19,9 @@ endif
 if !exists("b:brew_subtype") && main_syntax == 'brew'
   let s:lines = getline(1)."\n".getline(2)."\n".getline(3)."\n".getline(4)."\n".getline(5)."\n".getline("$")
   let b:brew_subtype = matchstr(s:lines,'brew_subtype=\zs\w\+')
+  if b:brew_subtype == ''
+    let b:brew_subtype = matchstr(&filetype,'^brew\.\zs\w\+')
+  endif
   if b:brew_subtype == ''
     let b:brew_subtype = matchstr(substitute(expand("%:t"), '\c\%\(\.brew\)\+$','',''),'\.\zs\w\+$')
   endif
@@ -51,22 +54,9 @@ exe 'syn region brewBlock      matchgroup=brewDelimiter start="<%\{1,'.b:brew_ne
 exe 'syn region brewExpression matchgroup=brewDelimiter start="<%\{1,'.b:brew_nest_level.'\}="       end="-\=%\@<!%\{1,'.b:brew_nest_level.'\}>" contains=@rTop containedin=ALLBUT,@brwRegions keepend'
 exe 'syn region brewComment    matchgroup=brewDelimiter start="<%\{1,'.b:brew_nest_level.'\}#"       end="-\=%\@<!%\{1,'.b:brew_nest_level.'\}>" contains=rTodo,@Spell containedin=ALLBUT,@brwRegions keepend'
 
-" Define the default highlighting.
-" For version 5.7 and earlier: only when not done already
-" For version 5.8 and later: only when an item doesn't have highlighting yet
-if version >= 508 || !exists("did_brew_syntax_inits")
-  if version < 508
-    let did_brew_syntax_inits = 1
-    command -nargs=+ HiLink hi link <args>
-  else
-    command -nargs=+ HiLink hi def link <args>
-  endif
+highlight default link brewDelimiter    PreProc
+highlight default link brewComment      Comment
 
-  HiLink brewDelimiter    Delimiter
-  HiLink brewComment      Comment
-
-  delcommand HiLink
-endif
 let b:current_syntax = 'brew'
 
 if main_syntax == 'brew'
